@@ -111,6 +111,7 @@ h1 {
   overflow-y: auto;
   scrollbar-width: thin;
   scrollbar-color: #6532f8 #232323;
+  color: #F3F6F9;
 }
 
 /* один элемент списка фильмов */
