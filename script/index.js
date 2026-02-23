@@ -1,20 +1,26 @@
-const filmInput = document.querySelector('.film-input');
-const addFilmBtn = document.querySelector('.arrow-btn');
-const filmList = document.querySelector('.films-list');
 const NO_FILM_MSG = 'Введите название фильма';
 const NO_FILMS_MSG = 'Enter a movie in the input above!';
+
+
+const inputNode = document.querySelector('.js-movie-input');
+
+const addButtonMovie = document.querySelector('.arrow-btn');
+const movieList = document.querySelector('.movie-list');
+
 
 let films = [];
 
 // init
 document.addEventListener('DOMContentLoaded',() => {
         films = loadFilmsFromStorage();
-        renderFilms()
+        render()
 });
 
-// добавление фильма
-addFilmBtn.addEventListener('click',() => {
-    const title = filmInput.value;
+addButtonMovie.addEventListener('click', addButtonHandler);
+
+
+function addButtonHandler(){
+    const title = inputNode.value;
     if(!title) {
         return
     }
@@ -24,14 +30,15 @@ addFilmBtn.addEventListener('click',() => {
         title,
         isWatched: false,
     }
+
     films.push(newFilm)
     saveFilmsToStorage()
-    renderFilms()
+    render()
     clearInput()
-});
+};
 
 // обработка кликов 
-filmList.addEventListener('click',(e) => {
+movieList.addEventListener('click',(e) => {
     const filmId = e.target.closest('.film-item')?.dataset.id;
     if(!filmId) return;
 
@@ -39,7 +46,7 @@ filmList.addEventListener('click',(e) => {
     if(e.target.classList.contains('delete-btn')){
         films = films.filter(f => f.id !== Number(filmId))
         saveFilmsToStorage();
-        renderFilms(); 
+        render(); 
     }
 
     // отметка просмотренного
@@ -48,7 +55,7 @@ filmList.addEventListener('click',(e) => {
         if(film){
             film.isWatched = e.target.checked
             saveFilmsToStorage();
-            renderFilms()
+            render()
         }
     }
 
@@ -56,10 +63,10 @@ filmList.addEventListener('click',(e) => {
 })
 
 // рендер фильмов
-function renderFilms() {
-    filmList.innerHTML = '';
+function render() {
+    movieList.innerHTML = '';
     if(films.length === 0) {
-        filmList.innerText = NO_FILMS_MSG;
+        movieList.innerText = NO_FILMS_MSG;
         return
     }
 
@@ -74,12 +81,13 @@ function renderFilms() {
              <span class=${f.isWatched ? 'crossed' : ''}>${f.title}</span>
              <button class="delete-btn">✖</button>      
         `
-        filmList.appendChild(filmItem);
+        movieList.appendChild(filmItem);
     })
 
 
 }
-// сохранение в лс
+
+//save to LocalStorage
 function saveFilmsToStorage () {
     localStorage.setItem('films',JSON.stringify(films));
 }
@@ -90,5 +98,11 @@ function loadFilmsFromStorage () {
 }
 // клиар инпут
 function clearInput() {
-    filmInput.value = '';
+    inputNode.value = '';
 }
+
+inputNode.addEventListener('keydown', function(event) {
+    if (event.key === 'Enter') {
+        addButtonHandler();
+    }
+});

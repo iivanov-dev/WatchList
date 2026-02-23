@@ -27,7 +27,7 @@ h1 {
     margin-bottom: 5px;
 } 
 
-.header {
+header {
     display: flex;
     flex-direction: column;
     align-items: flex-start;
@@ -56,7 +56,7 @@ h1 {
 }
 
 /* Поле ввода */
-.film-input {
+.movie-input {
   flex: 1; 
   min-width: 180px;
   background-color: #232323;
@@ -68,7 +68,7 @@ h1 {
   outline: none;
 }
 
-.film-input::placeholder {
+.movie-input::placeholder {
   color: #aaa;
 }
 
@@ -103,7 +103,7 @@ h1 {
   margin-left: 4px;
 }
 
-.films-list {
+.movie-list {
   margin-top: 50px;
   background-color: #232323;
   padding: 0 60px 40px; /* добавим немного воздуха по бокам */
@@ -212,7 +212,7 @@ h1 {
     text-align: center;
   }
 
-.header {
+header {
     margin-top: 40px;
     align-items: center;
 }
@@ -228,10 +228,10 @@ h1 {
     flex-direction: row;
     padding: 15px 20px;
 }
-.films-list {
+.movie-list {
 padding:0 5px 5px;
 }
-.film-input{
+.movie-input{
   width: 100%;
   font-size: 16px;
 }
