@@ -188,7 +188,7 @@ header {
 
 .crossed {
   text-decoration: line-through;
-  color: #888;
+  color: #888 !important;
 }
 
 @media (max-width:767px) {
@@ -212,6 +212,8 @@ header {
 .movie-item {
     flex-direction: row;
     padding: 15px 20px;
+
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 .movie-list {
 padding:0 5px 5px;

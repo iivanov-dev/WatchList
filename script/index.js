@@ -69,11 +69,34 @@ movieList.addEventListener('click', (event) => {
         if(film) {
             film.isWatched = !film.isWatched;
             saveToLocalStorage();
-            render();
+            updateSingleFilm(filmId);
         }
     }
 });
 
+function applyFilmStyles(filmItem, film) {
+    if(film.isWatched) {
+        filmItem.classList.add('watched');
+        filmItem.classList.remove('unwatched');
+        filmItem.querySelector('input').checked = true;
+        filmItem.querySelector('span').classList.add('crossed');
+    } else {
+        filmItem.classList.add('unwatched');
+        filmItem.classList.remove('watched');
+        filmItem.querySelector('input').checked = false;
+        filmItem.querySelector('span').classList.remove('crossed');
+    }
+}
+
+function updateSingleFilm(filmId) {
+    const filmItem = document.querySelector(`[data-id="${filmId}"]`);
+    if(!filmItem) return;
+
+    const film = movie.find(f => f.id === Number(filmId));
+    if(!film) return;
+    
+    applyFilmStyles(filmItem, film);
+}
 
 function render() {
     movieList.innerHTML = '';
@@ -83,25 +106,18 @@ function render() {
         return;
     }
 
-    movie.forEach(movie => {
+    movie.forEach(film => {
         const filmItem = document.createElement('div');
         filmItem.className = 'movie-item';
-        filmItem.dataset.id = movie.id;
+        filmItem.dataset.id = film.id;
         
-        if(movie.isWatched) {
-            filmItem.classList.add('watched');
-            filmItem.classList.remove('unwatched');
-        } else {
-            filmItem.classList.add('unwatched');
-            filmItem.classList.remove('watched');
-        }
-
         filmItem.innerHTML = `
-            <input type='radio' ${movie.isWatched ? 'checked' : ''}/>
-            <span class="${movie.isWatched ? 'crossed' : ''}">${movie.title}</span>
+            <input type='radio'/>
+            <span>${film.title}</span>
             <button class="delete-btn">✖</button>      
         `;
 
+        applyFilmStyles(filmItem, film);
         movieList.appendChild(filmItem);
     });
 }
