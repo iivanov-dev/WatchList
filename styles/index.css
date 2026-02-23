@@ -15,7 +15,7 @@ h1 {
     margin-top: 10px;
 }
 
-.violet {
+.wrapper-label {
     display: inline-block;
     background: #6532F8;
     padding:0 15px;
@@ -45,7 +45,6 @@ header {
     min-height: 400px;
 }
 
-/* Контейнер для инпута и кнопки */
 .input {
   display: flex;
   align-items: center;
@@ -55,7 +54,6 @@ header {
   flex-wrap: wrap;
 }
 
-/* Поле ввода */
 .movie-input {
   flex: 1; 
   min-width: 180px;
@@ -72,7 +70,7 @@ header {
   color: #aaa;
 }
 
-.arrow-btn {
+.add-button {
   width: 55px;
   height: 55px;
   background-color: #6532F8;
@@ -82,31 +80,19 @@ header {
   transition: background-color 0.2s ease, transform 0.2s ease;
 }
 
-/* убираем возможный чёрный фон внутри */
-.arrow-btn * {
+.add-button * {
   background: transparent !important;
 }
 
-.arrow-btn:hover {
-  background-color: #7a4bff; /* немного светлее */
+.add-button:hover {
+  background-color: #7a4bff;
   transform: translateY(-2px);
-}
-
-/* белая стрелка, без фона */
-.arrow {
-  width: 0;
-  height: 0;
-  background: transparent; /* <-- важно! */
-  border-top: 8px solid transparent;
-  border-bottom: 8px solid transparent;
-  border-left: 14px solid white; /* белая стрелка */
-  margin-left: 4px;
 }
 
 .movie-list {
   margin-top: 50px;
   background-color: #232323;
-  padding: 0 60px 40px; /* добавим немного воздуха по бокам */
+  padding: 0 60px 40px;
   max-height: 400px;
   overflow-y: auto;
   scrollbar-width: thin;
@@ -114,8 +100,7 @@ header {
   color: #F3F6F9;
 }
 
-/* один элемент списка фильмов */
-.film-item {
+.movie-item {
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -124,30 +109,26 @@ header {
   border-radius: 15px;
   margin-bottom: 15px;
   transition: background-color 0.2s ease, transform 0.1s ease;
-}
-.film-item {
+  
   opacity: 0;
   transform: translateY(10px);
   animation: fadeIn 0.3s forwards;
 }
 
 
-/* лёгкий hover-эффект */
-.film-item:hover {
+.movie-item:hover {
   background-color: #3a3a3a;
   transform: translateY(-2px);
 }
 
-/* радиокнопка */
-.film-item input[type="radio"] {
+.movie-item input[type="radio"] {
   width: 20px;
   height: 20px;
-  accent-color: #6532f8; /* фиолетовая галочка */
+  accent-color: #6532f8;
   cursor: pointer;
 }
 
-/* текст фильма */
-.film-item span {
+.movie-item span {
   flex-grow: 1;
   margin-left: 20px;
   color: #fff;
@@ -155,7 +136,6 @@ header {
   font-family: "Arimo", sans-serif;
 }
 
-/* кнопка удаления */
 .delete-btn {
   position: relative;
   width: 24px;
@@ -197,13 +177,18 @@ header {
 }
 
 .watched {
-  background-color: #1a1a1a; /* делает фон темнее */
-  opacity: 0.7;              /* слегка приглушает */
+  background-color: #1a1a1a;
+  opacity: 0.7;
+}
+
+.unwatched {
+  background-color: #2b2b2b;;
+  opacity: 0.7;
 }
 
 .crossed {
-  text-decoration: line-through; /* зачёркивает текст */
-  color: #888;                   /* делает цвет тусклым */
+  text-decoration: line-through;
+  color: #888;
 }
 
 @media (max-width:767px) {
@@ -224,7 +209,7 @@ header {
     flex-direction: column;
     align-items: stretch;
   }
-.film-item {
+.movie-item {
     flex-direction: row;
     padding: 15px 20px;
 }
@@ -235,7 +220,7 @@ padding:0 5px 5px;
   width: 100%;
   font-size: 16px;
 }
-.arrow-btn{
+.add-button{
   width: 45px;
   height: 45px;
   align-self: center;

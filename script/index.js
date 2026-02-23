@@ -1,108 +1,107 @@
-const NO_FILM_MSG = 'Введите название фильма';
 const NO_FILMS_MSG = 'Enter a movie in the input above!';
 
-
 const inputNode = document.querySelector('.js-movie-input');
+const addButtonMovie = document.querySelector('.js-add-button');
+const movieList = document.querySelector('.js-movie-list');
 
-const addButtonMovie = document.querySelector('.arrow-btn');
-const movieList = document.querySelector('.movie-list');
+let movie = [];
 
-
-let films = [];
-
-// init
-document.addEventListener('DOMContentLoaded',() => {
-        films = loadFilmsFromStorage();
-        render()
-});
-
+init();
 addButtonMovie.addEventListener('click', addButtonHandler);
-
-
-function addButtonHandler(){
-    const title = inputNode.value;
-    if(!title) {
-        return
-    }
-
-    const newFilm = {
-        id: Date.now(),
-        title,
-        isWatched: false,
-    }
-
-    films.push(newFilm)
-    saveFilmsToStorage()
-    render()
-    clearInput()
-};
-
-// обработка кликов 
-movieList.addEventListener('click',(e) => {
-    const filmId = e.target.closest('.film-item')?.dataset.id;
-    if(!filmId) return;
-
-    //удаление
-    if(e.target.classList.contains('delete-btn')){
-        films = films.filter(f => f.id !== Number(filmId))
-        saveFilmsToStorage();
-        render(); 
-    }
-
-    // отметка просмотренного
-    if(e.target.type === 'radio') {
-        const film = films.find(f => f.id === Number(filmId))
-        if(film){
-            film.isWatched = e.target.checked
-            saveFilmsToStorage();
-            render()
-        }
-    }
-
-    
-})
-
-// рендер фильмов
-function render() {
-    movieList.innerHTML = '';
-    if(films.length === 0) {
-        movieList.innerText = NO_FILMS_MSG;
-        return
-    }
-
-    films.forEach(f => {
-        const filmItem = document.createElement('div');
-        filmItem.classList ='film-item';
-        filmItem.dataset.id = f.id;
-        if(f.isWatched) filmItem.classList.add('watched');
-
-        filmItem.innerHTML = `
-             <input type='radio'${f.isWatched ? 'checked' : ''}/>
-             <span class=${f.isWatched ? 'crossed' : ''}>${f.title}</span>
-             <button class="delete-btn">✖</button>      
-        `
-        movieList.appendChild(filmItem);
-    })
-
-
-}
-
-//save to LocalStorage
-function saveFilmsToStorage () {
-    localStorage.setItem('films',JSON.stringify(films));
-}
-
-// загрузка из лс
-function loadFilmsFromStorage () {
-     return JSON.parse(localStorage.getItem('films')) || [];
-}
-// клиар инпут
-function clearInput() {
-    inputNode.value = '';
-}
 
 inputNode.addEventListener('keydown', function(event) {
     if (event.key === 'Enter') {
         addButtonHandler();
     }
 });
+
+
+function init(){
+    movie = loadFilmsFromStorage();
+    render();  
+};
+
+function addButtonHandler(){
+    
+    const title = inputNode.value;
+    if(!title) {
+        return
+    }
+
+    const newMovie = {
+        id: Date.now(),
+        title: title,
+        isWatched: false,
+    }
+
+    movie.push(newMovie);
+    saveToLocalStorage();
+    
+    clearInputNode();
+    render();
+};
+
+function saveToLocalStorage () {
+    localStorage.setItem('movie',JSON.stringify(movie));
+}
+
+function loadFilmsFromStorage () {
+     return JSON.parse(localStorage.getItem('movie')) || [];
+}
+
+function clearInputNode() {
+    inputNode.value = '';
+}
+
+movieList.addEventListener('click', (event) => {
+    const filmId = event.target.closest('.movie-item')?.dataset.id;
+    if(!filmId) return;
+
+    if(event.target.classList.contains('delete-btn')){
+        movie = movie.filter(film => film.id !== Number(filmId));
+        saveToLocalStorage();
+        render(); 
+        return;
+    }
+
+    if(event.target.type === 'radio') {
+        const film = movie.find(film => film.id === Number(filmId));
+        if(film) {
+            film.isWatched = !film.isWatched;
+            saveToLocalStorage();
+            render();
+        }
+    }
+});
+
+
+function render() {
+    movieList.innerHTML = '';
+    
+    if(movie.length === 0) {
+        movieList.innerText = NO_FILMS_MSG;
+        return;
+    }
+
+    movie.forEach(movie => {
+        const filmItem = document.createElement('div');
+        filmItem.className = 'movie-item';
+        filmItem.dataset.id = movie.id;
+        
+        if(movie.isWatched) {
+            filmItem.classList.add('watched');
+            filmItem.classList.remove('unwatched');
+        } else {
+            filmItem.classList.add('unwatched');
+            filmItem.classList.remove('watched');
+        }
+
+        filmItem.innerHTML = `
+            <input type='radio' ${movie.isWatched ? 'checked' : ''}/>
+            <span class="${movie.isWatched ? 'crossed' : ''}">${movie.title}</span>
+            <button class="delete-btn">✖</button>      
+        `;
+
+        movieList.appendChild(filmItem);
+    });
+}
